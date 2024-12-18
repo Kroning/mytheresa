@@ -1,0 +1,46 @@
+version: '3.9'
+
+networks:
+  local_net:
+    driver: bridge
+
+services:
+
+  mytheresa:
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #environment:
+      #CONFIG_FILE_PATH: "/bin/config/dev.yaml"
+      #CONFIG_PATH_APP: "mytheresa"
+      #ENVIRONMENT_NAME: "dev"
+    image: mytheresa
+    stdin_open: true
+    tty: true
+    networks:
+      - local_net
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      #liquibase:
+      #  condition: service_completed_successfully
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: "mytheresa"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "mytheresa" ]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+    networks:
+      - local_net
