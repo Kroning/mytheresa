@@ -1,0 +1,18 @@
+app:
+  name: mytheresa
+  env: dev
+  log_level: debug
+db:
+  master:
+    host: postgres
+    port: 5432
+    user: root
+    password: root
+    database: mytheresa
+    timeout: 2s
+    migrations_path: "file://migrations"
+server:
+  http:
+    port: 8080
+    read_timeout: 1m
+    write_timeout: 1m
