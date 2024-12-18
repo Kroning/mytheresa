@@ -19,9 +19,9 @@ Discount entity are not fully implemented. It should be somewhere in database to
 SKU can be used as unique primary key - but I am not sure if it's unique right now and will be in future (for example 2 products with 1 SKU but different currency).<br>
 Index is by category and price.
 
-I have used "migrate" library for simplicity. Usually I use liquibase for migrations, but for MySQL, had no time to switch to PostgreSQL.
+I have used "migrate" library for simplicity. Usually I use liquibase for migrations but for MySQL. Had no time to switch to PostgreSQL.
 
-I used sqlx for DB managment. It also a good idea to use something like Masterminds/squirrel for SQL quieres managment (GetProducts method is a good example. squirell will allow not to use ifs for different number of arguments.)
+I used sqlx for DB managment. It is also a good idea to use something like Masterminds/squirrel for SQL quieres managment (GetProducts method is a good example. squirell will allow not to use ifs for different number of arguments.)
 
 TODO:<br>
 Tests<br>
