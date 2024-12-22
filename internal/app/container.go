@@ -22,7 +22,7 @@ type Container struct {
 	db *postgresql.Storage
 
 	// repositories
-	productRepo *productrepo.Repo
+	productRepo *productrepo.ProductRepo
 
 	// api (http, grpc, graphql etc.)
 	httpRouter       chi.Router

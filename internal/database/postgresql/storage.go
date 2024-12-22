@@ -12,7 +12,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 
@@ -60,12 +59,14 @@ func connectionString(c NodeConfig) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", c.Host, c.Port, c.User, c.Password, c.Database)
 }
 
-func (s *Storage) Close() error {
-	if err := s.Master.Close(); err != nil {
-		return errors.Wrap(err, "db master: %v")
+func (s *Storage) Close() {
+	if s == nil || s.Master == nil {
+		logger.Info(context.Background(), "DB not initialized")
+		return
 	}
-
-	return nil
+	if err := s.Master.Close(); err != nil {
+		logger.Error(context.Background(), "db master: %v", zap.Error(err))
+	}
 }
 
 func (s *Storage) MigrateUp(migrationsPath string) error {

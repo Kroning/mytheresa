@@ -4,30 +4,33 @@ import (
 	"context"
 	"fmt"
 
+	sq "github.com/Masterminds/squirrel"
+
 	"github.com/Kroning/mytheresa/internal/domain"
 )
 
-func (r *Repo) GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error) {
+func (r *ProductRepo) GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error) {
 	var productRows []ProductRow
-	query := "SELECT " +
-		"sku," +
-		"name," +
-		"category," +
-		"price " +
-		"FROM products " +
-		"WHERE category = $1 "
+	query := sq.Select(
+		"sku",
+		"name",
+		"category",
+		"price ",
+	).
+		From("products").
+		Where(sq.Eq{"category": category}).
+		Limit(5).
+		PlaceholderFormat(sq.Dollar)
 	if price > 0 {
-		query = query + "AND price <= $2 "
+		query = query.Where(sq.LtOrEq{"price": price})
 	}
-	query += "LIMIT 5;"
 
-	var err error
-	// TODO: use squirrel to construct SQL and args
-	if price > 0 {
-		err = r.db.Master.SelectContext(ctx, &productRows, query, category, price)
-	} else {
-		err = r.db.Master.SelectContext(ctx, &productRows, query, category)
+	sql, args, err := query.ToSql()
+	if err != nil {
+		return nil, fmt.Errorf("failed to build query: %w", err)
 	}
+
+	err = r.db.Master.SelectContext(ctx, &productRows, sql, args...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make select: %w", err)
 	}

@@ -21,7 +21,7 @@ func main() {
 	}()
 
 	if err := run(); err != nil {
-		logger.Fatal(context.Background(), "incentives web server start / shutdown problem", zap.Error(err))
+		logger.Fatal(context.Background(), "web server start / shutdown problem", zap.Error(err))
 	}
 }
 
