@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/Kroning/mytheresa/internal/database/postgresql"
+	"github.com/Kroning/mytheresa/internal/service/discount"
 	"github.com/go-chi/chi/v5"
 	"go.uber.org/zap"
 
@@ -16,7 +17,8 @@ type Container struct {
 	logger *zap.Logger
 
 	// services
-	productService *product.Service
+	productService  *product.Service
+	discountService *discount.Service
 
 	// infrastructure
 	db *postgresql.Storage
@@ -34,10 +36,6 @@ func New(conf *config.Config, logger *zap.Logger) *Container {
 		config: conf,
 		logger: logger,
 	}
-}
-
-func (c *Container) AppName() string {
-	return c.Config().App.Name
 }
 
 func (c *Container) Config() *config.Config {

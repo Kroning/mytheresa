@@ -11,9 +11,9 @@ func MapProductsWithDiscountResponse(products []*domain.ProductWithDiscount) []*
 	for i, product := range products {
 		var discount *string
 		finalPrice := product.Price
-		if product.Discount > 0 {
-			finalPrice = int(float64(product.Price) * (1 - float64(product.Discount)/100))
-			discountStr := fmt.Sprintf("%d%%", product.Discount)
+		if product.Discount.Amount > 0 {
+			finalPrice = int(float64(product.Price) * (1 - float64(product.Discount.Amount)/100))
+			discountStr := fmt.Sprintf("%d%%", product.Discount.Amount)
 			discount = &discountStr
 		}
 		p := &ProductWithDiscountResponse{

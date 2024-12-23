@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/Kroning/mytheresa/internal/domain"
 	"github.com/Kroning/mytheresa/internal/logger"
+	"github.com/Kroning/mytheresa/internal/service/discount"
 	"github.com/Kroning/mytheresa/internal/service/product"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
@@ -17,15 +19,18 @@ const (
 	ErrNoCategory   = "no category in request"
 	ErrInvalidPrice = "invalid price in request"
 	ErrGetProducts  = "cannot get products"
+	ErrGetDiscounts = "cannot get discounts"
 )
 
 type ApiHandler struct {
-	productService *product.Service
+	productService  *product.Service
+	discountService *discount.Service
 }
 
-func NewApiHandler(productService *product.Service) *ApiHandler {
+func NewApiHandler(productService *product.Service, discountService *discount.Service) *ApiHandler {
 	return &ApiHandler{
-		productService: productService,
+		productService:  productService,
+		discountService: discountService,
 	}
 }
 
@@ -50,12 +55,21 @@ func (h *ApiHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	products, err := h.productService.GetProductsWithDiscount(ctx, category, price)
+	products, err := h.productService.GetProducts(ctx, category, price)
 	if err != nil {
 		logger.Error(ctx, ErrGetProducts, zap.Error(err))
 		ErrorJSON(w, r, http.StatusInternalServerError, errors.New(ErrGetProducts))
 		return
 	}
 
-	ResponseJSON(w, r, MapProductsWithDiscountResponse(products))
+	discounts, err := h.discountService.GetDiscounts(ctx)
+	if err != nil {
+		logger.Error(ctx, ErrGetDiscounts, zap.Error(err))
+		ErrorJSON(w, r, http.StatusInternalServerError, errors.New(ErrGetDiscounts))
+		return
+	}
+
+	productsWithDiscounts := domain.AddDiscountsToProduct(products, discounts)
+
+	ResponseJSON(w, r, MapProductsWithDiscountResponse(productsWithDiscounts))
 }

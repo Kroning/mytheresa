@@ -24,7 +24,14 @@ func TestMapProductsWithDiscountResponse(t *testing.T) {
 		Price:    500,
 		Currency: domain.CurrencyName,
 	}
-	productWithDiscount2 := &domain.ProductWithDiscount{Product: product2, Discount: 20}
+	productWithDiscount2 := &domain.ProductWithDiscount{
+		Product: product2,
+		Discount: domain.Discount{
+			TypeName:  "sku",
+			TypeValue: "000003",
+			Amount:    20,
+		},
+	}
 	response1 := &ProductWithDiscountResponse{
 		Sku:      "sku1",
 		Name:     "name1",

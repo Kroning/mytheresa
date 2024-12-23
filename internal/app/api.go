@@ -23,6 +23,7 @@ func (c *Container) GetHTTPApiHandlerV1(ctx context.Context) *v1.ApiHandler {
 	if c.httpApiHandlerV1 == nil {
 		c.httpApiHandlerV1 = v1.NewApiHandler(
 			c.GetProductService(ctx),
+			c.GetDiscountService(ctx),
 		)
 	}
 
