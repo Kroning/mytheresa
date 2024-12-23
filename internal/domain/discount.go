@@ -8,24 +8,6 @@ type Discount struct {
 
 type Discounts map[string][]*Discount
 
-/*func AddDiscounts(products []*Product) []*ProductWithDiscount {
-	// TODO: discounts should be a separate object and should be adjustable
-	var productsWithDiscount []*ProductWithDiscount
-	for _, product := range products {
-		productWithDiscount := &ProductWithDiscount{Product: *product}
-		if product.Category == "boots" {
-			productWithDiscount.DiscountAmount = 30
-		} else if product.Sku == "000003" {
-			productWithDiscount.DiscountAmount = 15
-		}
-		productsWithDiscount = append(productsWithDiscount, productWithDiscount)
-	}
-
-	return productsWithDiscount
-}*/
-
-//type DiscountAmount int
-
 type ProductWithDiscount struct {
 	Product
 	Discount
