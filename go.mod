@@ -13,6 +13,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
+	go.uber.org/mock v0.5.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.8.0
 )
@@ -51,7 +52,6 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/yuin/goldmark v1.4.13 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	go.uber.org/mock v0.5.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/crypto v0.27.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect

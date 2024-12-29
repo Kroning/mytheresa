@@ -34,21 +34,23 @@ func NewService(
 	}, nil
 }
 
+var defaultDiscounts = domain.Discounts{
+	"category": {
+		{
+			TypeName:  "category",
+			TypeValue: "boots",
+			Amount:    30,
+		},
+	},
+	"sky": {
+		{
+			TypeName:  "sku",
+			TypeValue: "000003",
+			Amount:    15,
+		},
+	},
+}
+
 func (s *Service) GetDiscounts(ctx context.Context) (domain.Discounts, error) {
-	return domain.Discounts{
-		"category": {
-			{
-				TypeName:  "category",
-				TypeValue: "boots",
-				Amount:    30,
-			},
-		},
-		"sky": {
-			{
-				TypeName:  "sku",
-				TypeValue: "000003",
-				Amount:    15,
-			},
-		},
-	}, nil
+	return defaultDiscounts, nil
 }
