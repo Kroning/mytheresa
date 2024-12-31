@@ -12,7 +12,7 @@ type discountRepo interface {
 	GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error)
 }
 
-type Service struct {
+type DiscountService struct {
 	//productRepo productRepo
 	logger *zap.Logger
 }
@@ -20,7 +20,7 @@ type Service struct {
 func NewService(
 	//productRepo productRepo,
 	logger *zap.Logger,
-) (*Service, error) {
+) (*DiscountService, error) {
 	/*if productRepo == nil {
 		return nil, fmt.Errorf("product repo is nil")
 	}*/
@@ -28,7 +28,7 @@ func NewService(
 		return nil, fmt.Errorf("logger is nil")
 	}
 
-	return &Service{
+	return &DiscountService{
 		//productRepo: productRepo,
 		logger: logger,
 	}, nil
@@ -51,6 +51,6 @@ var defaultDiscounts = domain.Discounts{
 	},
 }
 
-func (s *Service) GetDiscounts(ctx context.Context) (domain.Discounts, error) {
+func (s *DiscountService) GetDiscounts(ctx context.Context) (domain.Discounts, error) {
 	return defaultDiscounts, nil
 }

@@ -17,8 +17,8 @@ type Container struct {
 	logger *zap.Logger
 
 	// services
-	productService  *product.Service
-	discountService *discount.Service
+	productService  *product.ProductService
+	discountService *discount.DiscountService
 
 	// infrastructure
 	db *postgresql.Storage
