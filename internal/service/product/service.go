@@ -12,7 +12,7 @@ type productRepo interface {
 	GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error)
 }
 
-type Service struct {
+type ProductService struct {
 	productRepo productRepo
 	logger      *zap.Logger
 }
@@ -20,7 +20,7 @@ type Service struct {
 func NewService(
 	productRepo productRepo,
 	logger *zap.Logger,
-) (*Service, error) {
+) (*ProductService, error) {
 	if productRepo == nil {
 		return nil, fmt.Errorf("product repo is nil")
 	}
@@ -28,13 +28,13 @@ func NewService(
 		return nil, fmt.Errorf("logger is nil")
 	}
 
-	return &Service{
+	return &ProductService{
 		productRepo: productRepo,
 		logger:      logger,
 	}, nil
 }
 
-func (s *Service) GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error) {
+func (s *ProductService) GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error) {
 
 	return s.productRepo.GetProducts(ctx, category, price)
 }

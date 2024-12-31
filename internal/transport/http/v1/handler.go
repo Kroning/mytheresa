@@ -1,16 +1,23 @@
 package v1
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
 	"github.com/Kroning/mytheresa/internal/domain"
 	"github.com/Kroning/mytheresa/internal/logger"
-	"github.com/Kroning/mytheresa/internal/service/discount"
-	"github.com/Kroning/mytheresa/internal/service/product"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
+
+type ProductService interface {
+	GetProducts(ctx context.Context, category string, price int) ([]*domain.Product, error)
+}
+
+type DiscountService interface {
+	GetDiscounts(ctx context.Context) (domain.Discounts, error)
+}
 
 const (
 	paramCategory = "category"
@@ -23,11 +30,11 @@ const (
 )
 
 type ApiHandler struct {
-	productService  *product.Service
-	discountService *discount.Service
+	productService  ProductService
+	discountService DiscountService
 }
 
-func NewApiHandler(productService *product.Service, discountService *discount.Service) *ApiHandler {
+func NewApiHandler(productService ProductService, discountService DiscountService) *ApiHandler {
 	return &ApiHandler{
 		productService:  productService,
 		discountService: discountService,
@@ -63,6 +70,7 @@ func (h *ApiHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	discounts, err := h.discountService.GetDiscounts(ctx)
+	// TODO: does not produce any error right now. Add test when it will be
 	if err != nil {
 		logger.Error(ctx, ErrGetDiscounts, zap.Error(err))
 		ErrorJSON(w, r, http.StatusInternalServerError, errors.New(ErrGetDiscounts))

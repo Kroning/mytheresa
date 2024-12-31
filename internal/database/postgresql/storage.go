@@ -55,6 +55,10 @@ func New(cfg Config) (*Storage, error) {
 	return s, err
 }
 
+func NewFromDB(db *sqlx.DB) *Storage {
+	return &Storage{Master: db}
+}
+
 func connectionString(c NodeConfig) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", c.Host, c.Port, c.User, c.Password, c.Database)
 }
