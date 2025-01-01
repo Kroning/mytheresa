@@ -32,9 +32,9 @@ I used **sqlx** for DB managment. ~~It is also a good idea to use something like
 TODO:<br>
 Tests(for files with no logic)<br>
 Metrics<br>
-~~Masterminds/squirrel<br>~~ Done
+~~Masterminds/squirrel~~ Done<br>
 Liquibase<br>
-~~Move discount to be separate entitity.<br>~~ Done
+~~Move discount to be separate entitity.~~ Done<br>
 Move discounts to database.
 Traces<br>
 Maybe: auth<br>
